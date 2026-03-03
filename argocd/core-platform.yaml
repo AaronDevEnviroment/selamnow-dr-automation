@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: selamnow-core-platform
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/SelamNow/selamnow-core-ledger.git'
+    targetRevision: HEAD
+    path: k8s/overlays/dr-active # This directory is modified via GitOps during failover
+  destination:
+    server: 'https://kubernetes.default.svc' # Points to the active cluster
+    namespace: core-platform
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

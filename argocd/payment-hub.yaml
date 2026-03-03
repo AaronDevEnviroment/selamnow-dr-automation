@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: selamnow-payment-hub
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/SelamNow/selamnow-payment-hub.git"
+    targetRevision: HEAD
+    path: k8s/overlays/dr-active
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: payment-hub
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

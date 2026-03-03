@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: selamnow-observability
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/SelamNow/selamnow-observability.git"
+    targetRevision: HEAD
+    path: k8s/overlays/dr-active
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: observability
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

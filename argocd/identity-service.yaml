@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: selamnow-identity-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/SelamNow/selamnow-identity.git'
+    targetRevision: HEAD
+    path: k8s/overlays/dr-active
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: identity-service
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
