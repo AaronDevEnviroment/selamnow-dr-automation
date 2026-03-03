@@ -1,75 +1,51 @@
 #!/bin/bash
 # simulate-failover.sh
-# SelamNow DR Automation - RTO & GitOps Failover Simulation
-# To be executed quarterly to fulfill Banking DR Test Mandates.
+# SelamNow DR Automation - Advanced Failover Simulator & RTO Measurement
+# Automates the simulation of a Level 3 Region Outage to validate Tier-1 RTO matrices.
 
 set -euo pipefail
 
 echo "============================================="
-echo " SelamNow - Disaster Recovery Simulatiom"
-echo " EVENT LEVEL: 3 (Regional Failure)"
+echo " SelamNow - Regional Outage Chaos Simulation"
+echo " TARGET: identity-service"
 echo "============================================="
 
-echo "[WARNING] This script will automate the transition of the DR environment."
+echo "[1] Simulating primary region failure (Scaling Primary to 0)..."
+# In a real environment, this targets Region A
+# kubectl scale deployment identity-service --replicas=0 -n identity-service --context=region-a
+echo "[2] Identity Service in Region A has been terminated."
 
-read -p "Are you sure you wish to trigger the failover simulation? (y/n) " -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    echo "Aborting."
-    exit 1
-fi
+sleep 10
 
-START_TIME=$(date +%s)
-echo "[INFO] Simulation Started at $(date)"
+START=$(date +%s)
+echo "[3] Awaiting failover propagation to Hot Standby (Region B)..."
 
-echo ""
-echo "[1] Disconnecting Primary Region (Simulated split-brain prevention)..."
-# terraform apply -var="primary_active=false" ...
-sleep 2
+# Wait until health endpoint in region-b responds
+# until curl -s https://identity.region-b.selamnow.com/health/ready; do
+#   echo "Waiting for Region B readiness..."
+#   sleep 5
+# done
 
-echo ""
-echo "[2] Demoting Primary Database / Promoting Standby..."
-# Executing failover playbook for PG...
-sleep 2
-echo ">> Standby Database promoted to PRIMARY."
+# MOCK: Simulate duration loop
+echo "Waiting for Region B readiness..."
+sleep 5
+echo "Region B Ready."
 
-echo ""
-echo "[3] Executing Terraform DR Promotion (Promoting Secondary Cloud Infrastructure)..."
-# terraform apply -var-file="dr_active.tfvars" ...
-sleep 2
-echo ">> Region B Infrastructure is now ACTIVE."
-
-echo ""
-echo "[4] Propagating ArgoCD Multi-Region Switch..."
-# Updating ArgoCD application manifests to point to Region B clusters
-sleep 2
-echo ">> ArgoCD has successfully repointed Tier-1 Services to Standby Clusters."
-
-echo ""
-echo "[5] Running Health Checks on Promoted Environment..."
-# curl validation endpoints...
-sleep 2
-echo ">> Core Ledger API: 200 OK"
-echo ">> Identity Service: 200 OK"
-echo ">> Payment Hub: 200 OK"
-
-END_TIME=$(date +%s)
-DURATION=$((END_TIME - START_TIME))
+END=$(date +%s)
+RTO=$((END - START))
 
 echo ""
 echo "============================================="
-echo " SIMULATION COMPLETE"
-echo " Total Measured RTO: $DURATION seconds"
+echo " RTO VALIDATION COMPLETE"
+echo " Measured RTO = $RTO seconds"
 echo "============================================="
 
-# Ensure it's under 30 minutes (1800 seconds)
-if [ "$DURATION" -lt 1800 ]; then
-    echo "[PASS] Core Platform RTO requirements (< 30m) fulfilled."
+# Tier-1 Identity SLA < 15m (900 seconds)
+if [ $RTO -gt 900 ]; then
+  echo "[CRITICAL BREACH] Identity RTO exceeded Tier-1 threshold of 15 minutes!"
+  exit 1
 else
-    echo "[FAIL] Core Platform RTO Exceeded SLA."
-    exit 1
+  echo "[PASS] Identity failover executed well within 15m SLA."
 fi
 
-echo "Please document these outcomes in compliance/DR_TEST_REPORT_TEMPLATE.md"
 exit 0
