@@ -1,5 +1,17 @@
 # 🏛 SELAMNOW DR AUTOMATION — CONSTITUTION v1.0
 
+---
+
+## Financial Control Hooks (Mandatory)
+This repository implements the following Tier-1 financial controls as defined in the [Financial Control Framework](file:///d:/AITProjects/selamnow-governance-control-plane/docs/FINANCIAL_CONTROL_FRAMEWORK.md):
+
+- **Backup Automation:** Mandatory daily immutable backups of all financial databases.
+- **Failover Orchestration:** Automated recovery of the financial kernel in secondary regions.
+- **Data Recovery Integrity:** Validation of database checksums and consistency post-restore.
+- **Disaster Simulation:** Periodic automated testing of the full system recovery path.
+
+---
+
 `selamnow-dr-automation` is the centralized disaster recovery orchestration and failover control plane for all SelamNow Tier-1 services.
 
 It enforces:
