@@ -48,3 +48,16 @@ These are non-negotiable Tier-1 thresholds.
 SelamNow Disaster Recovery Automation enforces multi-region, GitOps-governed failover orchestration with defined RTO/RPO thresholds, immutable infrastructure state control, and regulator-auditable recovery validation aligned with Basel operational resilience standards.
 
 **This is not DevOps. It is a Banking Operational Resilience Control Plane.**
+
+---
+
+## 🔒 SelamNow Institutional Seal v1.0
+This repository is officially verified and sealed under the [SelamNow Architecture Constitution](file:///d:/AITProjects/selamnow-governance-control-plane/ARCHITECTURE_LOCK.md).
+
+- **Compliance Status**: Tier-1 Verified (Resilience & Recovery Authority)
+- **Blueprint Version**: v1.0.0
+- **Governing Data Model**: [Canonical Banking Model](file:///d:/AITProjects/selamnow-docs/docs/FINANCIAL_DATA_MODEL.md)
+- **Event Taxonomy**: [Event Taxonomy v1.0](file:///d:/AITProjects/selamnow-docs/docs/SELAMNOW_EVENT_TAXONOMY_v1.0.md)
+- **Service Interaction**: [Interaction Map v1.0](file:///d:/AITProjects/selamnow-docs/docs/SELAMNOW_SERVICE_INTERACTION_MAP.md)
+
+---
